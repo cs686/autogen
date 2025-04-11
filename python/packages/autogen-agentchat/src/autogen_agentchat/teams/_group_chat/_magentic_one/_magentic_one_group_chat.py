@@ -14,6 +14,7 @@ from .._base_group_chat import BaseGroupChat
 from .._events import GroupChatTermination
 from ._magentic_one_orchestrator import MagenticOneOrchestrator
 from ._prompts import ORCHESTRATOR_FINAL_ANSWER_PROMPT
+from ._prompts import ORCHESTRATOR_TASK_LEDGER_PLAN_PROMPT
 
 trace_logger = logging.getLogger(TRACE_LOGGER_NAME)
 event_logger = logging.getLogger(EVENT_LOGGER_NAME)
@@ -103,6 +104,7 @@ class MagenticOneGroupChat(BaseGroupChat, Component[MagenticOneGroupChatConfig])
         runtime: AgentRuntime | None = None,
         max_stalls: int = 3,
         final_answer_prompt: str = ORCHESTRATOR_FINAL_ANSWER_PROMPT,
+        task_ledger_plan_prompt: str = ORCHESTRATOR_TASK_LEDGER_PLAN_PROMPT,
     ):
         super().__init__(
             participants,
@@ -119,6 +121,7 @@ class MagenticOneGroupChat(BaseGroupChat, Component[MagenticOneGroupChatConfig])
         self._model_client = model_client
         self._max_stalls = max_stalls
         self._final_answer_prompt = final_answer_prompt
+        self._task_ledger_plan_prompt = task_ledger_plan_prompt
 
     def _create_group_chat_manager_factory(
         self,
@@ -145,6 +148,7 @@ class MagenticOneGroupChat(BaseGroupChat, Component[MagenticOneGroupChatConfig])
             self._model_client,
             self._max_stalls,
             self._final_answer_prompt,
+            self._task_ledger_plan_prompt,
             output_message_queue,
             termination_condition,
         )
