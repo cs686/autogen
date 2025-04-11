@@ -163,6 +163,7 @@ class MagenticOneGroupChat(BaseGroupChat, Component[MagenticOneGroupChatConfig])
             max_turns=self._max_turns,
             max_stalls=self._max_stalls,
             final_answer_prompt=self._final_answer_prompt,
+            task_ledger_plan_prompt=self._task_ledger_plan_prompt,
         )
 
     @classmethod
@@ -179,4 +180,5 @@ class MagenticOneGroupChat(BaseGroupChat, Component[MagenticOneGroupChatConfig])
             max_turns=config.max_turns,
             max_stalls=config.max_stalls,
             final_answer_prompt=config.final_answer_prompt,
+            task_ledger_plan_prompt=self._task_ledger_plan_prompt,
         )
