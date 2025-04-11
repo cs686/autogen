@@ -66,6 +66,7 @@ class MagenticOneOrchestrator(BaseGroupChatManager):
         model_client: ChatCompletionClient,
         max_stalls: int,
         final_answer_prompt: str,
+        task_ledger_plan_prompt: str,
         output_message_queue: asyncio.Queue[BaseAgentEvent | BaseChatMessage | GroupChatTermination],
         termination_condition: TerminationCondition | None,
     ):
@@ -84,6 +85,7 @@ class MagenticOneOrchestrator(BaseGroupChatManager):
         self._model_client = model_client
         self._max_stalls = max_stalls
         self._final_answer_prompt = final_answer_prompt
+        self._task_ledger_plan_prompt = task_ledger_plan_prompt
         self._max_json_retries = 10
         self._task = ""
         self._facts = ""
@@ -101,7 +103,10 @@ class MagenticOneOrchestrator(BaseGroupChatManager):
         return ORCHESTRATOR_TASK_LEDGER_FACTS_PROMPT.format(task=task)
 
     def _get_task_ledger_plan_prompt(self, team: str) -> str:
-        return ORCHESTRATOR_TASK_LEDGER_PLAN_PROMPT.format(team=team)
+        if self._task_ledger_plan_prompt == ORCHESTRATOR_TASK_LEDGER_PLAN_PROMPT:
+            return ORCHESTRATOR_TASK_LEDGER_PLAN_PROMPT.format(team=team)
+        else:
+            return self._task_ledger_plan_prompt
 
     def _get_task_ledger_full_prompt(self, task: str, team: str, facts: str, plan: str) -> str:
         return ORCHESTRATOR_TASK_LEDGER_FULL_PROMPT.format(task=task, team=team, facts=facts, plan=plan)
